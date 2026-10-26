@@ -38,8 +38,29 @@
   });
 
   async function chargerMessages() {
-    const { data, error } = await db.from("messages").select("*").order("cree_le", { ascending: false });
-    if (error) throw error;
+    const charger = () =>
+      db.from("messages").select("*").order("cree_le", { ascending: false });
+
+    let { data, error } = await charger();
+
+    // Si le jeton a expiré, tenter de renouveler la session.
+    if (
+      error &&
+      (error.code === "PGRST303" || /JWT expired/i.test(error.message || ""))
+    ) {
+      const { data: sessionData, error: refreshError } =
+        await db.auth.refreshSession();
+
+      if (!refreshError && sessionData.session) {
+        MON_ID = sessionData.session.user.id;
+        ({ data, error } = await charger());
+      }
+    }
+
+    if (error) {
+      throw error;
+    }
+
     return data.map(versMessage);
   }
 
