@@ -1,0 +1,356 @@
+/* ==========================================================
+   CARTE D'ANNIVERSAIRE VINTAGE : HTML + CSS uniquement
+   ========================================================== */
+
+:root {
+  --papier:   #e7d4ab;
+  --ivoire:   #f7edd4;
+  --brun:     #432a18;
+  --sepia:    #7b5532;
+  --or:       #b08d3c;
+  --or-clair: #dcc27a;
+
+  --police-titre: "Pinyon Script", "Snell Roundhand", "Brush Script MT", cursive;
+  --police-texte: "Cormorant Garamond", Garamond, "Palatino Linotype", Georgia, serif;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  overflow-x: hidden;
+  color: var(--brun);
+  font-family: var(--police-texte);
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem);
+  line-height: 1.55;
+
+  /* Papier ancien simulé : fond uni + taches + grain de fibres */
+  background-color: var(--papier);
+  background-image:
+    radial-gradient(ellipse at 50% 40%, rgba(255, 249, 228, 0.75), transparent 65%),
+    radial-gradient(circle at 12% 18%, rgba(150, 100, 40, 0.16) 0 3%, transparent 12%),
+    radial-gradient(circle at 88% 82%, rgba(150, 100, 40, 0.18) 0 4%, transparent 14%),
+    radial-gradient(circle at 80% 12%, rgba(120, 80, 30, 0.10) 0 2%, transparent 9%),
+    repeating-linear-gradient(87deg, rgba(110, 75, 35, 0.045) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(3deg,  rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 4px);
+}
+
+/* ---------- La case cachée (accessible au clavier) ---------- */
+.ouvrir {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- Hero plein écran ---------- */
+.page { position: relative; }
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 3vh, 1.75rem);
+  padding: clamp(2.25rem, 7vw, 4.5rem) clamp(1.5rem, 6vw, 4rem);
+  text-align: center;
+  isolation: isolate;
+}
+
+/* Bords du papier assombris, comme une vieille carte */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  box-shadow: inset 0 0 clamp(3rem, 12vw, 9rem) rgba(92, 56, 20, 0.55);
+  pointer-events: none;
+}
+
+/* Double cadre décoratif, doré puis brun */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: clamp(0.5rem, 2vw, 1.5rem);
+  z-index: -1;
+  border: clamp(3px, 0.5vw, 5px) double var(--sepia);
+  outline: 1px solid var(--or);
+  outline-offset: clamp(0.25rem, 0.8vw, 0.6rem);
+  pointer-events: none;
+}
+
+/* ---------- Les deux images, côte à côte ---------- */
+.vignettes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1rem, 5vw, 3.5rem);
+  width: min(100%, 44rem);
+}
+
+.cadre {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 15rem;
+  margin: 0;
+  padding: clamp(0.35rem, 1.2vw, 0.7rem);
+  background: var(--ivoire);
+  border: 1px solid rgba(123, 85, 50, 0.45);
+  box-shadow:
+    0 1px 1px rgba(67, 42, 24, 0.25),
+    0 10px 18px -6px rgba(67, 42, 24, 0.45),
+    0 22px 34px -14px rgba(67, 42, 24, 0.35);
+  transition: transform 1.2s cubic-bezier(.2, .7, .2, 1), box-shadow 1.2s ease;
+}
+
+.cadre--gauche { transform: rotate(-3deg); }
+.cadre--droite { transform: rotate(2.5deg); }
+
+.cadre img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  background: #efe1bd;
+  border: 1px solid rgba(123, 85, 50, 0.3);
+}
+
+/* Coins de photo d'album (en haut à gauche et en bas à droite) */
+.cadre::before,
+.cadre::after {
+  content: "";
+  position: absolute;
+  width: clamp(1rem, 4vw, 1.6rem);
+  aspect-ratio: 1;
+  background: var(--sepia);
+  opacity: 0.85;
+}
+.cadre::before {
+  top: -1px;
+  left: -1px;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+.cadre::after {
+  bottom: -1px;
+  right: -1px;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+/* ---------- Le nom : titre de couverture ---------- */
+.nom {
+  margin: clamp(0.25rem, 1.5vh, 1rem) 0 0;
+  max-width: 100%;
+  font-family: var(--police-titre);
+  font-weight: 400;
+  font-size: clamp(3.75rem, 5rem + 8vw, 10rem);
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+  color: var(--brun);
+  text-shadow:
+    1px 1px 0 rgba(255, 244, 214, 0.8),
+    2px 3px 0 rgba(176, 141, 60, 0.45),
+    0 6px 14px rgba(67, 42, 24, 0.22);
+}
+
+/* Filet doré sous le nom */
+.nom::after {
+  content: "";
+  display: block;
+  width: clamp(4rem, 22vw, 11rem);
+  height: 1px;
+  margin: clamp(0.4rem, 1.5vh, 0.9rem) auto 0;
+  background: linear-gradient(90deg, transparent, var(--or), transparent);
+}
+
+/* ---------- Phrase émotionnelle ---------- */
+.phrase {
+  margin: 0;
+  max-width: 28ch;
+  font-style: italic;
+  font-size: clamp(1.15rem, 1rem + 1vw, 1.75rem);
+  line-height: 1.45;
+  color: var(--sepia);
+  text-wrap: balance;
+}
+
+/* ---------- Bouton "Appuie sur moi" ---------- */
+.bouton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.25rem;
+  max-width: 100%;
+  margin-top: clamp(0.25rem, 1.5vh, 1rem);
+  padding: 0.7rem clamp(1.75rem, 6vw, 3rem);
+  font-family: var(--police-texte);
+  font-weight: 600;
+  font-size: clamp(1.1rem, 1rem + 0.6vw, 1.45rem);
+  letter-spacing: 0.06em;
+  color: var(--ivoire);
+  background: linear-gradient(180deg, #5a3a22, var(--brun));
+  border: 1px solid var(--or);
+  outline: 1px solid var(--or-clair);
+  outline-offset: 4px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 180, 0.25),
+    0 8px 16px -6px rgba(67, 42, 24, 0.55);
+  transition: transform 0.5s ease, box-shadow 0.5s ease, outline-offset 0.5s ease;
+}
+
+/* Reflet doré qui glisse au survol */
+.bouton::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 35%, rgba(220, 194, 122, 0.45) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform 1s ease;
+}
+
+.bouton:hover,
+.bouton:active {
+  transform: translateY(-2px);
+  outline-offset: 7px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 180, 0.3),
+    0 14px 22px -8px rgba(67, 42, 24, 0.6);
+}
+.bouton:hover::before { transform: translateX(120%); }
+
+.bouton__avant,
+.bouton__apres {
+  position: relative;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.bouton__apres {
+  position: absolute;
+  opacity: 0;
+  transform: translateY(0.6rem);
+  white-space: nowrap;
+}
+
+/* Focus visible au clavier (la case cachée reçoit le focus) */
+.ouvrir:focus-visible ~ .hero .bouton {
+  outline: 3px solid var(--or-clair);
+  outline-offset: 6px;
+}
+
+/* ---------- Message qui se déplie ---------- */
+.voeu {
+  display: grid;
+  grid-template-rows: 0fr;
+  max-width: 34ch;
+  transition: grid-template-rows 1.4s cubic-bezier(.2, .7, .2, 1);
+}
+
+.voeu p {
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  opacity: 0;
+  font-size: clamp(1.05rem, 0.95rem + 0.6vw, 1.45rem);
+  line-height: 1.6;
+  color: var(--brun);
+  transition: opacity 1.6s ease 0.5s;
+}
+
+/* ==========================================================
+   ÉTAT "OUVERT" : après le clic sur le bouton
+   ========================================================== */
+
+.ouvrir:checked ~ .hero .voeu { grid-template-rows: 1fr; }
+.ouvrir:checked ~ .hero .voeu p { opacity: 1; }
+
+/* Les photos se redressent doucement et la lumière monte */
+.ouvrir:checked ~ .hero .cadre--gauche { transform: rotate(-1deg) translateY(-4px); }
+.ouvrir:checked ~ .hero .cadre--droite { transform: rotate(1deg) translateY(-4px); }
+.ouvrir:checked ~ .hero .cadre {
+  box-shadow:
+    0 1px 1px rgba(67, 42, 24, 0.25),
+    0 14px 24px -8px rgba(67, 42, 24, 0.5),
+    0 0 2.5rem rgba(220, 194, 122, 0.55);
+}
+
+/* Le texte du bouton change */
+.ouvrir:checked ~ .hero .bouton__avant {
+  opacity: 0;
+  transform: translateY(-0.6rem);
+}
+.ouvrir:checked ~ .hero .bouton__apres {
+  position: relative;
+  opacity: 1;
+  transform: none;
+  white-space: normal;
+}
+
+/* Halo doré qui s'allume derrière la carte, une seule fois */
+.ouvrir:checked ~ .hero::before {
+  animation: halo 2.4s ease-out both;
+}
+
+@keyframes halo {
+  0%   { box-shadow: inset 0 0 clamp(3rem, 12vw, 9rem) rgba(92, 56, 20, 0.55); }
+  45%  { box-shadow: inset 0 0 clamp(3rem, 12vw, 9rem) rgba(92, 56, 20, 0.35),
+                     inset 0 0 clamp(1.5rem, 6vw, 4rem) rgba(220, 194, 122, 0.6); }
+  100% { box-shadow: inset 0 0 clamp(3rem, 12vw, 9rem) rgba(92, 56, 20, 0.5); }
+}
+
+/* ==========================================================
+   RESPONSIVE : ajustements fins
+   ========================================================== */
+
+/* Très petits écrans : 320px */
+@media (max-width: 360px) {
+  .vignettes { gap: 0.75rem; }
+  .bouton { padding-inline: 1.25rem; letter-spacing: 0.03em; }
+}
+
+/* Écrans bas (paysage mobile) : on resserre l'espace vertical */
+@media (max-height: 520px) {
+  .hero { gap: 0.6rem; padding-block: 1.5rem; }
+  .cadre { max-width: 8rem; }
+  .nom { font-size: clamp(2.75rem, 8vw, 4.5rem); }
+}
+
+/* Grands écrans : images un peu plus généreuses */
+@media (min-width: 1280px) {
+  .cadre { max-width: 17rem; }
+  .vignettes { width: min(100%, 52rem); }
+}
+
+/* Respect des personnes sensibles au mouvement */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* Lien vers la page 2 (apparaît avec le message) */
+.suite {
+  display: inline-block;
+  padding: 0.6rem 0.25rem;
+  color: var(--sepia);
+  font-style: italic;
+  text-underline-offset: 0.25em;
+}
+.suite:hover,
+.suite:focus-visible { color: var(--brun); }

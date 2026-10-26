@@ -1,0 +1,435 @@
+/* ==========================================================
+   PAGE 2 : ALBUM + LIVRE D'OR
+   (les variables, le papier et le bouton viennent de style.css)
+   ========================================================== */
+
+/* ---------- Page et cadre ---------- */
+.page {
+  position: relative;
+  overflow: hidden;
+  min-height: 100svh;
+  padding: clamp(3rem, 9vw, 6rem) clamp(1.75rem, 6vw, 4rem) clamp(3rem, 8vw, 5rem);
+}
+
+/* Bords assombris qui "respirent" doucement (seule l'opacité bouge : très léger) */
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 clamp(3rem, 12vw, 9rem) rgba(92, 56, 20, 0.55);
+  pointer-events: none;
+  animation: respire 10s ease-in-out infinite alternate;
+}
+
+/* Double cadre, identique à la page 1 */
+.page::after {
+  content: "";
+  position: absolute;
+  inset: clamp(0.5rem, 2vw, 1.5rem);
+  border: clamp(3px, 0.5vw, 5px) double var(--sepia);
+  outline: 1px solid var(--or);
+  outline-offset: clamp(0.25rem, 0.8vw, 0.6rem);
+  pointer-events: none;
+}
+
+/* Le contenu passe au-dessus des décors */
+.entete, main, .pied { position: relative; z-index: 1; }
+
+/* ---------- Décors qui bougent lentement ---------- */
+.rosace {
+  position: absolute;
+  width: clamp(6rem, 20vw, 13rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: 0.4;
+  background: repeating-conic-gradient(var(--or) 0 3deg, transparent 3deg 15deg);
+  -webkit-mask: radial-gradient(circle, transparent 36%, #000 37% 68%, transparent 69%);
+          mask: radial-gradient(circle, transparent 36%, #000 37% 68%, transparent 69%);
+  animation: tourne 140s linear infinite;
+  pointer-events: none;
+}
+.rosace--haut { top: 4%;  left: -3rem; }
+.rosace--bas  { bottom: 2%; right: -3rem; animation-direction: reverse; }
+
+.poussiere {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.poussiere span {
+  position: absolute;
+  bottom: -1rem;
+  left: var(--x);
+  width: var(--t);
+  height: var(--t);
+  border-radius: 50%;
+  background: var(--or-clair);
+  opacity: 0;
+  animation: monte var(--d) linear var(--w) infinite;
+}
+
+/* ---------- En-tête ---------- */
+.entete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 1.75rem);
+  margin-bottom: clamp(2.5rem, 7vw, 4.5rem);
+  text-align: center;
+}
+
+.titre {
+  margin: 0;
+  font-family: var(--police-titre);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 2rem + 5vw, 6rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  text-shadow: 1px 1px 0 rgba(255, 244, 214, 0.8), 2px 3px 0 rgba(176, 141, 60, 0.4);
+}
+
+/* Ruban : le texte est devant, les deux "queues" derrière */
+.ruban {
+  position: relative;
+  isolation: isolate;
+  margin: 0;
+}
+.ruban span {
+  position: relative;
+  z-index: 1;
+  display: block;
+  padding: 0.45rem clamp(1.25rem, 6vw, 3rem);
+  font-size: clamp(1.1rem, 1rem + 0.8vw, 1.6rem);
+  letter-spacing: 0.05em;
+  color: var(--ivoire);
+  background: var(--sepia);
+  box-shadow: 0 6px 10px -4px rgba(67, 42, 24, 0.5);
+}
+.ruban::before,
+.ruban::after {
+  content: "";
+  position: absolute;
+  top: 0.55rem;
+  z-index: -1;
+  width: 1.8rem;
+  height: 100%;
+  background: #5a3a22;
+}
+.ruban::before { left: -1.2rem;  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 35% 50%); }
+.ruban::after  { right: -1.2rem; clip-path: polygon(0 0, 100% 0, 65% 50%, 100% 100%, 0 100%); }
+
+/* ---------- Album : composition en grille ---------- */
+.album {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 6vw, 2.25rem) clamp(1rem, 5vw, 2rem);
+  width: min(100%, 62rem);
+  margin-inline: auto;
+}
+
+.photo {
+  position: relative;
+  margin: 0;
+  padding: clamp(0.4rem, 1.5vw, 0.75rem) clamp(0.4rem, 1.5vw, 0.75rem) 0;
+  background: var(--ivoire);
+  border: 1px solid rgba(123, 85, 50, 0.4);
+  box-shadow:
+    0 1px 1px rgba(67, 42, 24, 0.25),
+    0 12px 20px -8px rgba(67, 42, 24, 0.5),
+    0 26px 36px -16px rgba(67, 42, 24, 0.35);
+  rotate: var(--r, 0deg);
+  /* 1) apparition douce une fois  2) flottement sans fin */
+  animation:
+    apparition 1.8s ease-out var(--delai, 0s) both,
+    flotte var(--duree, 9s) ease-in-out var(--delai, 0s) infinite;
+  will-change: translate, rotate;
+}
+
+.photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;          /* l'image remplit toujours son cadre, sans déformation */
+  object-position: 50% 25%;   /* on garde les visages dans le cadre */
+  background: #e9d8b0;
+  filter: sepia(0.22) contrast(0.98);
+}
+
+.photo figcaption {
+  padding: 0.55rem 0.25rem 0.7rem;
+  text-align: center;
+  font-style: italic;
+  font-size: clamp(0.95rem, 0.85rem + 0.5vw, 1.2rem);
+  line-height: 1.25;
+  color: var(--sepia);
+}
+
+/* Bande adhésive en haut de chaque photo */
+.photo::before {
+  content: "";
+  position: absolute;
+  top: -0.7rem;
+  left: 50%;
+  width: clamp(3rem, 12vw, 4.5rem);
+  height: 1.3rem;
+  background: rgba(220, 194, 122, 0.6);
+  box-shadow: 0 1px 2px rgba(67, 42, 24, 0.25);
+  transform: translateX(-50%) rotate(-3deg);
+}
+
+/* La photo héro : plus grande, liseré doré, bande plus large */
+.photo--hero {
+  grid-column: 1 / -1;
+  padding: clamp(0.6rem, 2.5vw, 1.1rem) clamp(0.6rem, 2.5vw, 1.1rem) 0;
+  z-index: 2;
+  box-shadow:
+    0 1px 1px rgba(67, 42, 24, 0.3),
+    0 18px 30px -10px rgba(67, 42, 24, 0.55),
+    0 0 3rem rgba(220, 194, 122, 0.4);
+}
+.photo--hero::after {
+  content: "";
+  position: absolute;
+  inset: clamp(0.25rem, 1.2vw, 0.5rem);
+  border: 1px solid var(--or);
+  pointer-events: none;
+}
+.photo--hero::before { width: clamp(4.5rem, 18vw, 7rem); }
+.photo--hero figcaption { font-size: clamp(1.15rem, 1rem + 1vw, 1.7rem); }
+
+/* Tablette et plus : photo héro au centre, deux photos de chaque côté */
+@media (min-width: 768px) {
+  .album {
+    grid-template-columns: 1fr 1.9fr 1fr;
+    grid-template-rows: auto auto;
+    align-items: center;
+  }
+  .photo--hero { grid-column: 2; grid-row: 1 / 3; }
+  .photo--a { grid-column: 1; grid-row: 1; margin-right: -1.5rem; z-index: 3; }
+  .photo--b { grid-column: 3; grid-row: 1; margin-left: -1.5rem; margin-top: 3rem; z-index: 3; }
+  .photo--c { grid-column: 1; grid-row: 2; margin-left: 1.25rem; margin-right: -1rem; z-index: 3; }
+  .photo--d { grid-column: 3; grid-row: 2; margin-left: -1rem; margin-right: 1.25rem; margin-top: -1.5rem; z-index: 3; }
+}
+
+/* ---------- Séparateurs et citation ---------- */
+.separateur {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: min(100%, 26rem);
+  margin: clamp(2.5rem, 7vw, 4rem) auto;
+}
+.separateur::before,
+.separateur::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--or));
+}
+.separateur::after { transform: scaleX(-1); }
+.separateur span {
+  width: 0.55rem;
+  height: 0.55rem;
+  background: var(--or);
+  rotate: 45deg;
+  animation: pulse 6s ease-in-out infinite;
+}
+
+.citation {
+  max-width: 30ch;
+  margin: 0 auto;
+  text-align: center;
+}
+.citation p {
+  margin: 0;
+  font-style: italic;
+  font-size: clamp(1.3rem, 1.1rem + 1.3vw, 2rem);
+  line-height: 1.4;
+  color: var(--sepia);
+  text-wrap: balance;
+}
+
+/* ---------- Livre d'or ---------- */
+.livre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.livre__titre {
+  margin: 0;
+  font-family: var(--police-titre);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 2rem + 3vw, 4.5rem);
+  line-height: 1.2;
+}
+.livre__invitation {
+  max-width: 34ch;
+  margin: 0.5rem 0 clamp(1.5rem, 5vw, 2.5rem);
+  font-style: italic;
+  color: var(--sepia);
+}
+
+/* Formulaire : une feuille de lettre */
+.lettre-form {
+  width: min(100%, 36rem);
+  padding: clamp(1.25rem, 5vw, 2.25rem);
+  text-align: left;
+  background: var(--ivoire);
+  border: 1px solid rgba(123, 85, 50, 0.45);
+  outline: 1px solid var(--or-clair);
+  outline-offset: -0.6rem;
+  box-shadow: 0 14px 24px -10px rgba(67, 42, 24, 0.5);
+}
+.champ { margin-bottom: 1.25rem; }
+.champ label {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--sepia);
+}
+.champ input,
+.champ textarea {
+  display: block;
+  width: 100%;
+  min-height: 3rem;               /* zone tactile confortable */
+  padding: 0.5rem 0.25rem;
+  font: inherit;
+  font-size: 1.15rem;             /* 16px minimum : pas de zoom auto sur iPhone */
+  color: var(--brun);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--sepia);
+  border-radius: 0;
+}
+.champ textarea {
+  resize: vertical;
+  line-height: 2rem;
+  /* lignes d'un papier à lettres */
+  background-image: repeating-linear-gradient(transparent 0 1.9rem, rgba(123, 85, 50, 0.35) 1.9rem 2rem);
+  background-attachment: local;
+}
+.champ input:focus,
+.champ textarea:focus {
+  outline: none;
+  border-bottom-color: var(--or);
+  box-shadow: 0 2px 0 var(--or);
+}
+
+.lettre-form .bouton { display: flex; width: 100%; }
+.confirmation {
+  min-height: 1.5rem;
+  margin: 0.9rem 0 0;
+  text-align: center;
+  font-style: italic;
+  color: var(--sepia);
+}
+.vide { margin: 2.5rem 0 0; font-style: italic; color: var(--sepia); }
+.vide[hidden] { display: none; }
+
+/* ---------- Messages : lettres posées sur la table ---------- */
+.lettres {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: clamp(1.75rem, 5vw, 2.5rem) clamp(1.25rem, 4vw, 2rem);
+  width: min(100%, 60rem);
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lettre {
+  position: relative;
+  padding: 1.6rem 1.4rem 1.3rem;
+  text-align: left;
+  background: var(--ivoire);
+  border: 1px solid rgba(123, 85, 50, 0.4);
+  outline: 1px solid var(--or-clair);
+  outline-offset: -0.5rem;
+  box-shadow: 0 10px 18px -8px rgba(67, 42, 24, 0.5);
+  rotate: var(--r, 0deg);
+  animation: arrivee 1.2s ease-out both;
+}
+.lettre:nth-child(3n + 1) { --r: -1.2deg; }
+.lettre:nth-child(3n + 2) { --r: 0.9deg; }
+.lettre:nth-child(3n)     { --r: -0.4deg; }
+
+/* Sceau de cire */
+.lettre::before {
+  content: "";
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #a65a42, #6b2b1d);
+  box-shadow: 0 2px 4px rgba(67, 42, 24, 0.5);
+  transform: translateX(-50%);
+}
+
+.lettre__texte {
+  margin: 0.4rem 0 1rem;
+  font-style: italic;
+  line-height: 1.5;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.lettre__nom {
+  margin: 0;
+  font-family: var(--police-titre);
+  font-size: 1.9rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.lettre__date { font-size: 0.95rem; color: var(--sepia); }
+
+/* ---------- Pied de page ---------- */
+.pied { margin-top: clamp(3rem, 8vw, 4.5rem); text-align: center; }
+.pied a {
+  display: inline-block;
+  padding: 0.75rem 0.5rem;
+  font-style: italic;
+  color: var(--sepia);
+  text-underline-offset: 0.25em;
+}
+.pied a:hover,
+.pied a:focus-visible { color: var(--brun); }
+
+/* ==========================================================
+   ANIMATIONS (on n'anime que translate, rotate, opacity : léger pour le GPU)
+   ========================================================== */
+@keyframes apparition { from { opacity: 0; filter: sepia(1) blur(3px); } to { opacity: 1; filter: none; } }
+@keyframes flotte {
+  0%, 100% { translate: 0 0;      rotate: var(--r, 0deg); }
+  50%      { translate: 0 -0.6rem; rotate: calc(var(--r, 0deg) + 0.8deg); }
+}
+@keyframes tourne  { to { rotate: 360deg; } }
+@keyframes respire { from { opacity: 0.75; } to { opacity: 1; } }
+@keyframes pulse   { 0%, 100% { scale: 1; opacity: 0.8; } 50% { scale: 1.35; opacity: 1; } }
+@keyframes arrivee { from { opacity: 0; translate: 0 1rem; } to { opacity: 1; translate: 0 0; } }
+@keyframes monte {
+  0%   { opacity: 0;   translate: 0 0; }
+  10%  { opacity: 0.8; }
+  90%  { opacity: 0.6; }
+  100% { opacity: 0;   translate: var(--dx) -105svh; }
+}
+
+/* Petits écrans : on évite que le ruban touche le cadre */
+@media (max-width: 360px) {
+  .ruban::before { left: -0.9rem; }
+  .ruban::after  { right: -0.9rem; }
+}
+
+/* Pour les personnes qui préfèrent moins de mouvement */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0.01s !important;
+  }
+}

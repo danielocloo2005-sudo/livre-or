@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Joyeux anniversaire</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Pinyon+Script&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <!-- Case cachée : c'est elle qui "mémorise" le clic sur le bouton, sans JavaScript -->
+      <input type="checkbox" id="ouvrir" class="ouvrir" />
+
+      <section class="hero">
+        <!-- Les deux images vectorielles : remplace image-gauche.svg et image-droite.svg par les tiennes -->
+        <div class="vignettes">
+          <figure class="cadre cadre--gauche">
+            <img src="image-gauche.svg" alt="Illustration vintage de gauche" />
+          </figure>
+          <figure class="cadre cadre--droite">
+            <img src="image-droite.svg" alt="Illustration vintage de droite" />
+          </figure>
+        </div>
+
+        <!-- Remplace "Prénom" par le nom de la personne -->
+        <h1 class="nom">Docteur Joseph yawo kague</h1>
+
+        <p class="phrase">
+          Une année de plus, et toujours cette lumière qui rend les souvenirs
+          plus doux.
+        </p>
+
+        <label for="ouvrir" class="bouton" tabindex="-1">
+          <span class="bouton__avant">Appuie sur moi</span>
+          <span class="bouton__apres">Joyeux anniversaire</span>
+        </label>
+
+        <div class="voeu" aria-live="polite">
+          <p>
+            Que cette nouvelle année s’ouvre comme un vieil album : des pages
+            pleines de rires, de lumière et de moments qu’on a envie de garder
+            pour toujours.
+            <a class="suite" href="album.html">Tourner la page</a>
+          </p>
+        </div>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="album.js"></script>
+  </body>
+</html>

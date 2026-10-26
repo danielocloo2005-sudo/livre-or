@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>L’album – Joyeux anniversaire</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Pinyon+Script&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- style.css = base commune (couleurs, papier, bouton) / album.css = cette page -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="album.css" />
+  </head>
+  <body>
+    <!-- Poussière dorée décorative (purement visuelle) -->
+    <div class="poussiere" aria-hidden="true">
+      <span style="--x: 8%; --t: 3px; --d: 22s; --w: 0s; --dx: 30px"></span>
+      <span style="--x: 22%; --t: 5px; --d: 30s; --w: 6s; --dx: -24px"></span>
+      <span style="--x: 37%; --t: 4px; --d: 26s; --w: 12s; --dx: 20px"></span>
+      <span style="--x: 51%; --t: 3px; --d: 34s; --w: 3s; --dx: -34px"></span>
+      <span style="--x: 66%; --t: 6px; --d: 28s; --w: 9s; --dx: 26px"></span>
+      <span style="--x: 79%; --t: 4px; --d: 24s; --w: 15s; --dx: -18px"></span>
+      <span style="--x: 92%; --t: 5px; --d: 32s; --w: 1s; --dx: -28px"></span>
+    </div>
+
+    <div class="page">
+      <span class="rosace rosace--haut" aria-hidden="true"></span>
+      <span class="rosace rosace--bas" aria-hidden="true"></span>
+
+      <nav class="pages pages--haut" aria-label="Pages du livre">
+        <a href="index.html"
+          ><span class="fleche fleche--gauche" aria-hidden="true"></span>Page
+          précédente</a
+        >
+        <p class="pages__texte">Page 2 sur 2</p>
+      </nav>
+
+      <!-- ===== EN-TÊTE ===== -->
+      <header class="entete">
+        <!-- Remplace "Prénom" par le nom de la personne -->
+        <h1 class="titre">Les souvenirs de Joseph</h1>
+        <p class="ruban"><span>Joyeux anniversaire</span></p>
+        <p class="intro">
+          Quelques souvenirs réunis pour fêter cette journée. Fais défiler
+          l’album, puis laisse un mot dans le livre d’or.
+        </p>
+        <a class="bouton" href="#titre-livre"
+          ><span class="bouton__avant"
+            >Laisser un message<span
+              class="fleche fleche--bas"
+              aria-hidden="true"
+            ></span></span
+        ></a>
+      </header>
+
+      <!-- ===== ALBUM : 1 photo héro + 4 photos autour =====
+         Remplace photo-1.svg ... photo-5.svg par tes images (jpg, webp...).
+         Garde l'ordre : photo-1 = la photo principale. -->
+      <main>
+        <section class="album" aria-label="Album photo">
+          <figure
+            class="photo photo--hero"
+            style="--r: -0.6deg; --duree: 11s; --delai: 0.2s"
+          >
+            <img
+              src="2.jpeg"
+              alt="Portrait de la personne fêtée"
+              width="800"
+              height="1000"
+            />
+            <figcaption>Toujours la plus belle des lumières</figcaption>
+          </figure>
+
+          <figure
+            class="photo photo--a"
+            style="--r: -3deg; --duree: 9s; --delai: 0.8s"
+          >
+            <img
+              src="1.jpeg"
+              alt="Souvenir 2"
+              width="600"
+              height="750"
+              loading="lazy"
+            />
+            <figcaption>Un rire d’été</figcaption>
+          </figure>
+
+          <figure
+            class="photo photo--b"
+            style="--r: 2.5deg; --duree: 10s; --delai: 1.3s"
+          >
+            <img
+              src="3.jpeg"
+              alt="Souvenir 3"
+              width="600"
+              height="750"
+              loading="lazy"
+            />
+            <figcaption>Les jours simples</figcaption>
+          </figure>
+
+          <figure
+            class="photo photo--c"
+            style="--r: 2deg; --duree: 8.5s; --delai: 1.8s"
+          >
+            <img
+              src="4.jpeg"
+              alt="Souvenir 4"
+              width="600"
+              height="750"
+              loading="lazy"
+            />
+            <figcaption>Ensemble</figcaption>
+          </figure>
+
+          <figure
+            class="photo photo--d"
+            style="--r: -2.5deg; --duree: 9.5s; --delai: 2.3s"
+          >
+            <img
+              src="5.jpeg"
+              alt="Souvenir 5"
+              width="600"
+              height="750"
+              loading="lazy"
+            />
+            <figcaption>Avant le gâteau</figcaption>
+          </figure>
+        </section>
+
+        <div class="separateur" aria-hidden="true"><span></span></div>
+
+        <blockquote class="citation">
+          <p>
+            Les années tournent comme les pages d’un album, et les plus belles
+            gardent l’odeur du papier ancien.
+          </p>
+        </blockquote>
+
+        <div class="separateur" aria-hidden="true"><span></span></div>
+
+        <!-- ===== LIVRE D'OR ===== -->
+        <section class="livre" aria-labelledby="titre-livre">
+          <h2 id="titre-livre" class="livre__titre">Le livre d’or</h2>
+          <p class="livre__invitation">
+            Glisse ici quelques mots, un souvenir ou un souhait. Chaque message
+            sera rangé entre les pages de cet album.
+          </p>
+
+          <form
+            id="formulaire"
+            class="lettre-form"
+            autocomplete="off"
+            novalidate
+          >
+            <p id="mode" class="mode" hidden>
+              Tu es en train de corriger ton message.
+            </p>
+
+            <div class="champ">
+              <label for="nom">Ton nom</label>
+              <input
+                type="text"
+                id="nom"
+                name="nom"
+                maxlength="40"
+                required
+                aria-describedby="erreur-nom"
+                placeholder="Pour signer ton mot"
+              />
+              <p id="erreur-nom" class="erreur" role="alert"></p>
+            </div>
+
+            <div class="champ">
+              <label for="message">Ton message</label>
+              <textarea
+                id="message"
+                name="message"
+                maxlength="400"
+                rows="5"
+                required
+                aria-describedby="erreur-message"
+                placeholder="Écris quelques mots chaleureux…"
+              ></textarea>
+              <p id="erreur-message" class="erreur" role="alert"></p>
+              <p id="compteur" class="compteur" aria-hidden="true">0 / 400</p>
+            </div>
+
+            <button type="submit" class="bouton">
+              <span class="bouton__avant" id="texte-envoi"
+                >Déposer mon message</span
+              >
+            </button>
+            <button type="button" id="annuler" class="lien" hidden>
+              Annuler la correction
+            </button>
+            <p id="confirmation" class="confirmation" role="status"></p>
+          </form>
+
+          <p id="vide" class="vide">Le livre attend ses premiers mots.</p>
+          <ol
+            id="lettres"
+            class="lettres"
+            aria-label="Messages d’anniversaire"
+          ></ol>
+        </section>
+      </main>
+
+      <footer class="pied">
+        <nav class="pages" aria-label="Pages du livre">
+          <a href="index.html"
+            ><span class="fleche fleche--gauche" aria-hidden="true"></span
+            >Revenir à la première page</a
+          >
+          <p class="pages__texte">Page 2 sur 2</p>
+        </nav>
+      </footer>
+    </div>
+
+    <!-- Confirmation avant de retirer un message -->
+    <dialog
+      id="dialogue-suppression"
+      class="dialogue"
+      aria-labelledby="dialogue-titre"
+    >
+      <form method="dialog">
+        <h2 id="dialogue-titre" class="dialogue__titre">
+          Retirer ce message ?
+        </h2>
+        <p>Il sera retiré du livre d’or et ne pourra pas être retrouvé.</p>
+        <div class="dialogue__actions">
+          <button value="garder" class="bouton bouton--clair">
+            <span class="bouton__avant">Le garder</span>
+          </button>
+          <button value="retirer" class="bouton">
+            <span class="bouton__avant">Le retirer</span>
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Bibliothèque Supabase (doit être chargée AVANT album.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="album.js"></script>
+  </body>
+</html>
